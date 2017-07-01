@@ -10,11 +10,12 @@ import java.net.Socket;
 
 public class HttpServer {
 
-	public static final String WEB_ROOT = System.getProperty("user.dir" + File.separator + "webroot");
+	public static final String WEB_ROOT = System.getProperty("user.dir") + "\\how-tomcat-works" + File.separator + "webroot";
 	public static final String SHUTDOWN_COMMAND = "/SHUTDOWN";
 	private boolean shutdown = false;
 
 	public static void main(String[] args) {
+		System.out.println(WEB_ROOT);
 		HttpServer server = new HttpServer();
 		server.await();
 	}
