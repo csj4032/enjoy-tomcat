@@ -1,11 +1,3 @@
 rootProject.name = 'enjoy-tomcat'
-rootProject.name = 'enjoy-tomcat'
-rootProject.name = 'enjoy-tomcat'
-rootProject.name = 'enjoy-tomcat'
 include 'how-tomcat-works'
 include 'tomcat'
-rootProject.name = 'enjoy-tomcat'
-rootProject.name = 'enjoy-tomcat'
-include 'tomcat'
-include 'how-tomcat-works'
-
