@@ -1,10 +1,13 @@
 package ex03.pyrmont.connector.http;
 
+import lombok.extern.slf4j.Slf4j;
+
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.ServerSocket;
 import java.net.Socket;
 
+@Slf4j
 public class HttpConnector implements Runnable {
 
 	boolean stopped;
@@ -21,6 +24,7 @@ public class HttpConnector implements Runnable {
 
 		try {
 			serverSocket = new ServerSocket(port, 1, InetAddress.getByName("127.0.0.1"));
+			log.info("serverSocket");
 		} catch (IOException e) {
 			e.printStackTrace();
 			System.exit(0);
