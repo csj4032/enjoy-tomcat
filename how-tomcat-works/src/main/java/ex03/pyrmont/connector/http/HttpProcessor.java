@@ -3,9 +3,11 @@ package ex03.pyrmont.connector.http;
 import ex03.pyrmont.ServletProcessor;
 import ex03.pyrmont.StaticResourceProcessor;
 import lombok.extern.slf4j.Slf4j;
+import org.apache.catalina.util.RequestUtil;
 import org.apache.naming.StringManager;
 
 import javax.servlet.ServletException;
+import javax.servlet.http.Cookie;
 import java.io.IOException;
 import java.io.OutputStream;
 import java.net.Socket;
@@ -63,14 +65,46 @@ public class HttpProcessor {
 	private void parseHeaders(SocketInputStream input) throws IOException, ServletException {
 		while (true) {
 			HttpHeader header = new HttpHeader();
-			input.readHeader(header);
 
+			// Read the next header
+			input.readHeader(header);
 			if (header.nameEnd == 0) {
 				if (header.valueEnd == 0) {
 					return;
 				} else {
-					throw new ServletException(sm.getString("httpProcessor.parseHeaders.colon"));
+					throw new ServletException
+							(sm.getString("httpProcessor.parseHeaders.colon"));
 				}
+			}
+
+			String name = new String(header.name, 0, header.nameEnd);
+			String value = new String(header.value, 0, header.valueEnd);
+			request.addHeader(name, value);
+
+			if (name.equals("cookie")) {
+				Cookie cookies[] = RequestUtil.parseCookieHeader(value);
+				for (int i = 0; i < cookies.length; i++) {
+					if (cookies[i].getName().equals("jsessionid")) {
+						// Override anything requested in the URL
+						if (!request.isRequestedSessionIdFromCookie()) {
+							// Accept only the first session id cookie
+							request.setRequestedSessionId(cookies[i].getValue());
+							request.setRequestedSessionCookie(true);
+							request.setRequestedSessionURL(false);
+						}
+					}
+					request.addCookie(cookies[i]);
+				}
+			} else if (name.equals("content-length")) {
+				int n = -1;
+				try {
+					n = Integer.parseInt(value);
+				} catch (Exception e) {
+					throw new ServletException(sm.getString("httpProcessor.parseHeaders.contentLength"));
+				}
+				request.setContentLength(n);
+			} else if (name.equals("content-type")) {
+				request.setContentType(value);
 			}
 		}
 	}
