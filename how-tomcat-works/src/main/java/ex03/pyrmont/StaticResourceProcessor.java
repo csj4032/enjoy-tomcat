@@ -1,7 +1,18 @@
 package ex03.pyrmont;
 
-/**
- * Created by genius on 2017. 7. 3..
- */
+import ex03.pyrmont.connector.http.HttpRequest;
+import ex03.pyrmont.connector.http.HttpResponse;
+
+import java.io.IOException;
+
 public class StaticResourceProcessor {
+
+	public void process(HttpRequest request, HttpResponse response) {
+		try {
+			response.sendStaticResource();
+		}
+		catch (IOException e) {
+			e.printStackTrace();
+		}
+	}
 }

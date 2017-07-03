@@ -1,5 +1,7 @@
 package ex03.pyrmont.connector.http;
 
+import org.apache.catalina.util.ParameterMap;
+
 import javax.servlet.*;
 import javax.servlet.http.*;
 import java.io.BufferedReader;
@@ -9,6 +11,7 @@ import java.io.UnsupportedEncodingException;
 import java.net.InetAddress;
 import java.net.Socket;
 import java.security.Principal;
+import java.text.SimpleDateFormat;
 import java.util.*;
 
 public class HttpRequest implements HttpServletRequest {
@@ -30,11 +33,86 @@ public class HttpRequest implements HttpServletRequest {
 
 	protected HashMap attributes = new HashMap();
 	protected String authorization = null;
+	protected String contextPath = "";
+	protected ArrayList cookies = new ArrayList();
+	protected static ArrayList empty = new ArrayList();
+	protected SimpleDateFormat formats[] = {
+			new SimpleDateFormat("EEE, dd MMM yyyy HH:mm:ss zzz", Locale.US),
+			new SimpleDateFormat("EEEEEE, dd-MMM-yy HH:mm:ss zzz", Locale.US),
+			new SimpleDateFormat("EEE MMMM d HH:mm:ss yyyy", Locale.US)
+	};
+	protected HashMap headers = new HashMap();
+	protected ParameterMap parameters = null;
+	protected boolean parsed = false;
+	protected String pathInfo = null;
 
 	protected ServletInputStream stream = null;
 
 	public HttpRequest(InputStream input) {
 		this.input = input;
+	}
+
+	public void setContentLength(int length) {
+		this.contentLength = length;
+	}
+
+	public void setContentType(String type) {
+		this.contentType = type;
+	}
+
+	public void setInet(InetAddress inetAddress) {
+		this.inetAddress = inetAddress;
+	}
+
+	public void setContextPath(String path) {
+		if (path == null)
+			this.contextPath = "";
+		else
+			this.contextPath = path;
+	}
+
+	public void setMethod(String method) {
+		this.method = method;
+	}
+
+	public void setPathInfo(String path) {
+		this.pathInfo = path;
+	}
+
+	public void setProtocol(String protocol) {
+		this.protocol = protocol;
+	}
+
+	public void setQueryString(String queryString) {
+		this.queryString = queryString;
+	}
+
+	public void setRequestURI(String requestURI) {
+		this.requestURI = requestURI;
+	}
+
+	public void setServerName(String name) {
+		this.serverName = name;
+	}
+
+	public void setServerPort(int port) {
+		this.serverPort = port;
+	}
+
+	public void setSocket(Socket socket) {
+		this.socket = socket;
+	}
+
+	public void setRequestedSessionCookie(boolean flag) {
+		this.requestedSessionCookie = flag;
+	}
+
+	public void setRequestedSessionId(String requestedSessionId) {
+		this.requestedSessionId = requestedSessionId;
+	}
+
+	public void setRequestedSessionURL(boolean flag) {
+		requestedSessionURL = flag;
 	}
 
 	@Override
@@ -119,7 +197,7 @@ public class HttpRequest implements HttpServletRequest {
 
 	@Override
 	public String getRequestURI() {
-		return null;
+		return requestURI;
 	}
 
 	@Override
