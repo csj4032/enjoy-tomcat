@@ -1,0 +1,3 @@
+dependencies {
+    compile group: 'javax.servlet', name: 'servlet-api', version: '2.3'
+}

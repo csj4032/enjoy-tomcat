@@ -1,0 +1,5 @@
+dependencies {
+    compile group: 'tomcat', name: 'catalina', version: '4.0.4'
+    compile group: 'javax.servlet', name: 'servlet-api', version: '2.4'
+    compile group: 'tomcat', name: 'tomcat-util', version: '3.3.2'
+}
